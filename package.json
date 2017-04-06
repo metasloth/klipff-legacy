@@ -1,0 +1,22 @@
+{
+  "name": "klipff",
+  "version": "0.0.1",
+  "description": "An electron wrapper around FFmpeg for making gifs and lossless shortening of videos.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metasloth/klipff.git"
+  },
+  "author": "Sam Hemann",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/metasloth/klipff/issues"
+  },
+  "homepage": "https://github.com/metasloth/klipff#readme",
+  "devDependencies": {
+    "electron": "~1.6.2"
+  }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>klipff</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <button id="select-file">Choose File</button>
+  <p id="current-file">No file selected</p>
+  <div class="player">
+    <video id="preview" width="720" height="480" controls>
+      <source id="vid-source"> </source>
+    </video>
+  </div>
+  <div>
+    <button id="setin">Set In Point</button>
+    <span id="current-in-point">0.000</span>
+  </div>
+  <div>
+    <button id="setout">Set Out Point</button>
+    <span id="current-out-point">0.000</span>
+  </div>
+  <p> The video is at <span id="playtime"> 0 </span> seconds. </p>
+  <div>
+    <button id="shorten-video">Shorten Video</button>
+    <button id="create-gif">Create Gif</button>
+  </div>
+  <textarea id="output" rows="10" cols="90">FFmpeg output:</textarea>
+</body>
+
+<script>
+  require('./renderer.js')
+</script>
+
+</html>
