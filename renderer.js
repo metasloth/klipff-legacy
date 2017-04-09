@@ -2,12 +2,12 @@
 
 const ipc = require('electron').ipcRenderer
 const spawn = require('child_process').spawn
+const path = require('path')
 
 const source = document.getElementById('vid-source')
-const previewPlayer = document.getElementById("preview")
-const inButton = document.getElementById("setin")
-const outButton = document.getElementById("setout")
-
+const previewPlayer = document.getElementById('preview')
+const inButton = document.getElementById('setin')
+const outButton = document.getElementById('setout')
 
 // Fields
 let inPoint = 0.0
@@ -18,11 +18,12 @@ const selectFileButton = document.getElementById('select-file')
 selectFileButton.addEventListener('click', (event) => {
   ipc.send('open-file-dialog')
 })
-ipc.on('selected-directory', (event, path) => {
-  source.setAttribute('src', path)
+
+ipc.on('selected-directory', (event, filePath) => {
+  source.setAttribute('src', filePath)
   previewPlayer.load()
-  document.getElementById('current-file').innerHTML = path
-  localStorage.setItem('videoPath', path)
+  document.getElementById('current-file').innerHTML = filePath
+  localStorage.setItem('videoPath', filePath)
 })
 
 // load last used file
@@ -34,7 +35,7 @@ if (localStorage.getItem('videoPath')) {
 
 // Player Timer
 previewPlayer.addEventListener('timeupdate', (event) => {
-  document.getElementById("playtime").innerHTML = Math.round(previewPlayer.currentTime * 1000) / 1000
+  document.getElementById('playtime').innerHTML = Math.round(previewPlayer.currentTime * 1000) / 1000
 })
 
 // Set in point
@@ -58,32 +59,37 @@ outButton.addEventListener('click', (event) => {
 })
 
 // Shorten video test
-const shortenButton = document.getElementById("shorten-video")
+const shortenButton = document.getElementById('shorten-video')
 const uiLog = document.getElementById('output')
+
 shortenButton.addEventListener('click', (event) => {
-  let duration = Math.round((outPoint - inPoint) * 1000) /1000
-  let output = __dirname + "\\tmp\\shortened.mp4"
-  let ffmpegArguments = `ffmpeg.exe -i ${localStorage.getItem('videoPath')} -ss ${inPoint} -c copy -t ${duration} ${output}`
+  let duration = Math.round((outPoint - inPoint) * 1000) / 1000
+  let output = __dirname + '\\tmp\\shortened.mp4'
+  //let input = localStorage.getItem('videoPath').replace(/\s/g, "^ ")
+  // let ffmpegArguments = `ffmpeg.exe -i ${localStorage.getItem('videoPath')} -ss ${inPoint} -c copy -t ${duration} ${output}`
   let args = [
-    "-i", localStorage.getItem('videoPath'),
-    "-y", // forces overwite
-    "-ss", inPoint,
-    "-c", "copy",
-    "-t", duration,
+    '-i', localStorage.getItem('videoPath'),
+    '-y', // forces overwite
+    '-ss', inPoint,
+    '-c', 'copy',
+    '-t', duration,
     output
   ]
+
   const proc = spawn('ffmpeg.exe', args)
   proc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
+
   proc.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    console.log(`stderr: ${data}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
     uiLog.scrollTop = uiLog.scrollHeight
   })
+
   proc.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(`child process exited with code ${code}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
     uiLog.scrollTop = uiLog.scrollHeight
@@ -92,62 +98,68 @@ shortenButton.addEventListener('click', (event) => {
 
 // Create gif test
 const gifButton = document.getElementById('create-gif')
+
 gifButton.addEventListener('click', (event) => {
   // Shorten Video
-  let duration = Math.round((outPoint - inPoint) * 1000) /1000
-  let output = __dirname + "\\tmp\\shortened.mp4"
+  let duration = Math.round((outPoint - inPoint) * 1000) / 1000
+  let output = __dirname + '\\tmp\\shortened.mp4'
   let args = [
-    "-i", localStorage.getItem('videoPath'),
-    "-y", // forces overwite
-    "-ss", inPoint,
-    "-c", "copy",
-    "-t", duration,
+    '-i', localStorage.getItem('videoPath'),
+    '-y', // forces overwite
+    '-ss', inPoint,
+    '-c', 'copy',
+    '-t', duration,
     output
   ]
+
   const shortenProc = spawn('ffmpeg.exe', args)
   shortenProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
+
   shortenProc.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    console.log(`stderr: ${data}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
     uiLog.scrollTop = uiLog.scrollHeight
   })
+
   shortenProc.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(`child process exited with code ${code}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
     uiLog.scrollTop = uiLog.scrollHeight
     createPalette()
   })
-
 })
 
 function createPalette () {
-  console.log("Creating palette...")
-  let input = __dirname + "\\tmp\\shortened.mp4"
-  let palletOut = __dirname + "\\tmp\\palette.png"
-  let filters = "fps=30,scale=720:-1:flags=lanczos"
+  console.log('Creating palette...')
+  let input = __dirname + '\\tmp\\shortened.mp4'
+  let palletOut = __dirname + '\\tmp\\palette.png'
+  let filters = 'fps=30,scale=720:-1:flags=lanczos'
   let args = [
-    "-v", "warning",
-    "-i", input,
-    "-vf", `${filters},palettegen`,
-    "-y",
+    '-v', 'warning',
+    '-i', input,
+    '-vf', `${filters},palettegen`,
+    '-y',
     palletOut
   ]
-  const paletteProc = spawn("ffmpeg.exe", args)
-    paletteProc.stdout.on('data', (data) => {
+  const paletteProc = spawn('ffmpeg.exe', args)
+
+  paletteProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
+
   paletteProc.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    console.log(`stderr: ${data}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
     uiLog.scrollTop = uiLog.scrollHeight
   })
+
   paletteProc.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(`child process exited with code ${code}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
     uiLog.scrollTop = uiLog.scrollHeight
@@ -156,31 +168,34 @@ function createPalette () {
 }
 
 function createGif () {
-  console.log("Creating gif...")
-  let input = __dirname + "\\tmp\\shortened.mp4"
-  let palletOut = __dirname + "\\tmp\\palette.png"
-  let gifOut = __dirname + "\\tmp\\whatagif.gif"
-  let filters = "fps=30,scale=720:-1:flags=lanczos"
+  console.log('Creating gif...')
+  let input = __dirname + '\\tmp\\shortened.mp4'
+  let palletOut = __dirname + '\\tmp\\palette.png'
+  let gifOut = __dirname + '\\tmp\\whatagif.gif'
+  let filters = 'fps=30,scale=720:-1:flags=lanczos'
   let args = [
-    "-v", "warning",
-    "-i", input,
-    "-i", palletOut,
-    "-lavfi", `${filters} [x]; [x][1:v] paletteuse`,
-    "-y",
+    '-v', 'warning',
+    '-i', input,
+    '-i', palletOut,
+    '-lavfi', `${filters} [x]; [x][1:v] paletteuse`,
+    '-y',
     gifOut
   ]
-  const gifProc = spawn("ffmpeg.exe", args)
-    gifProc.stdout.on('data', (data) => {
+  const gifProc = spawn('ffmpeg.exe', args)
+
+  gifProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
+
   gifProc.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    console.log(`stderr: ${data}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
     uiLog.scrollTop = uiLog.scrollHeight
   })
+
   gifProc.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(`child process exited with code ${code}`)
     let currentText = uiLog.innerHTML
     uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
     uiLog.scrollTop = uiLog.scrollHeight
