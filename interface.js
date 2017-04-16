@@ -14,7 +14,7 @@ let inPoint = 0.0
 let outPoint = 0.0
 
 // Select File
-const selectFileButton = document.getElementById('select-file')
+const selectFileButton = document.getElementById('btn-select-file')
 selectFileButton.addEventListener('click', (event) => {
   ipc.send('open-file-dialog')
 })
@@ -30,7 +30,7 @@ ipc.on('selected-directory', (event, filePath) => {
 if (localStorage.getItem('videoPath')) {
   source.setAttribute('src', localStorage.getItem('videoPath'))
   previewPlayer.load()
-  document.getElementById('current-file').innerHTML = localStorage.getItem('videoPath')
+  document.getElementById('current-file').innerHTML = localStorage.getItem('videoPath') + "ladaldaldfkdafj;asdklfja;sldkfjas;dlfkjas;dlfkjas;dlfkjjjdjfa;lsdkjf;alsdkjfa;lsdkfj;alskdjf;alsdkcn;alskdnc;lakneac;laekns;clknase;cf"
 }
 
 // Player Timer
@@ -76,7 +76,7 @@ shortenButton.addEventListener('click', (event) => {
     output
   ]
 
-  const proc = spawn('ffmpeg.exe', args)
+  const proc = spawn('ffmpeg', args)
   proc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
@@ -112,7 +112,7 @@ gifButton.addEventListener('click', (event) => {
     output
   ]
 
-  const shortenProc = spawn('ffmpeg.exe', args)
+  const shortenProc = spawn('ffmpeg', args)
   shortenProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
   })
@@ -137,7 +137,7 @@ function createPalette () {
   console.log('Creating palette...')
   let input = __dirname + '\\tmp\\shortened.mp4'
   let palletOut = __dirname + '\\tmp\\palette.png'
-  let filters = 'fps=30,scale=720:-1:flags=lanczos'
+  let filters = 'fps=24,scale=720:-1:flags=lanczos'
   let args = [
     '-v', 'warning',
     '-i', input,
@@ -145,7 +145,7 @@ function createPalette () {
     '-y',
     palletOut
   ]
-  const paletteProc = spawn('ffmpeg.exe', args)
+  const paletteProc = spawn('ffmpeg', args)
 
   paletteProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
@@ -181,7 +181,7 @@ function createGif () {
     '-y',
     gifOut
   ]
-  const gifProc = spawn('ffmpeg.exe', args)
+  const gifProc = spawn('ffmpeg', args)
 
   gifProc.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
