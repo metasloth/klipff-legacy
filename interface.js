@@ -19,10 +19,11 @@ selectFileButton.addEventListener('click', (event) => {
   ipc.send('open-file-dialog')
 })
 
+// Load a file selected from an open file dialogue
 ipc.on('selected-directory', (event, filePath) => {
   source.setAttribute('src', filePath)
   previewPlayer.load()
-  document.getElementById('current-file').innerHTML = filePath
+  document.getElementById('current-file').innerHTML = path.basename(String(filePath))
   localStorage.setItem('videoPath', filePath)
 })
 
@@ -30,7 +31,7 @@ ipc.on('selected-directory', (event, filePath) => {
 if (localStorage.getItem('videoPath')) {
   source.setAttribute('src', localStorage.getItem('videoPath'))
   previewPlayer.load()
-  document.getElementById('current-file').innerHTML = localStorage.getItem('videoPath') + "ladaldaldfkdafj;asdklfja;sldkfjas;dlfkjas;dlfkjas;dlfkjjjdjfa;lsdkjf;alsdkjfa;lsdkfj;alskdjf;alsdkcn;alskdnc;lakneac;laekns;clknase;cf"
+  document.getElementById('current-file').innerHTML = path.basename(localStorage.getItem('videoPath'))
 }
 
 // Player Timer

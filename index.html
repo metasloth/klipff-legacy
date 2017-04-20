@@ -12,10 +12,7 @@
     <div class="file-container">
         <span class="file-current">Current File:</span>
         <span class="file-name" id="current-file">No file selected</span>
-        <div class="file-open" id="btn-select-file">
-            <p class="file-open-text">Open</p>
-        </div>
-        <!--<button class="file-name" id="select-file">Choose File</button>-->
+        <button class="file-open" id="btn-select-file">Open</button>
     </div>
 
     <!-- Player/Marking Section -->
@@ -25,22 +22,37 @@
                 <source id="vid-source"> </source>
             </video>
         </div>
-        <div>
-            <button id="setin">Set In Point</button>
-            <span id="current-in-point">0.000</span>
+        <div class="video-timeline">
+            <span class="video-time">0:00</span>
+            <div class="video-range-container">
+                <div class="video-range-elapsed"></div>
+                <input type="range"></input>
+            </div>
+            <span class="video-length">1:59</span>
         </div>
-        <div>
-            <button id="setout">Set Out Point</button>
-            <span id="current-out-point">0.000</span>
+        <div class="player-controls">
+            <div>
+                <button id="setin">Set In Point</button>
+                <span id="current-in-point">0.000</span>
+            </div>
+            <div>
+                <button id="setout">Set Out Point</button>
+                <span id="current-out-point">0.000</span>
+            </div>
+            <p> The video is at <span id="playtime"> 0 </span> seconds. </p>
         </div>
-        <p> The video is at <span id="playtime"> 0 </span> seconds. </p>
     </div>
 
     <!-- Export Section -->
     <div class="export-container">
-        <div>
-            <button id="shorten-video">Shorten Video</button>
-            <button id="create-gif">Create Gif</button>
+        <div class="export-button-wrap">
+            <button id="create-gif" class="export-button export-gif">Create Gif</button>
+        </div>
+        <div class="export-button-wrap">
+            <button id="shorten-video" class="export-button export-clip">Shorten Video</button>
+        </div>
+        <div class="export-button-wrap">
+            <button id="export-other" class="export-button export-other">Export</button>
         </div>
     </div>
 
@@ -50,6 +62,7 @@
 
 <script>
     require('./interface.js')
+
 </script>
 
 </html>
