@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
     <!-- Import Section -->
     <div class="file-container">
         <span class="file-current">Current File:</span>
@@ -18,13 +19,13 @@
     <!-- Player/Marking Section -->
     <div class="player-container">
         <div class="player">
-            <video class="player-video" id="preview" width="720" height="480" controls>
+            <video class="player-video" id="video-preview" width="720" height="480" controls>
                 <source id="vid-source"> </source>
             </video>
         </div>
         <div class="video-timeline">
             <span class="video-time">0:00</span>
-            <div class="video-range-container">
+            <div id="video-range" class="video-range-container">
                 <div class="video-range-elapsed"></div>
                 <input type="range"></input>
             </div>
@@ -56,13 +57,11 @@
         </div>
     </div>
 
-    <!-- Dev Section -->
-    <textarea id="output" rows="10" cols="90">FFmpeg output:</textarea>
 </body>
 
 <script>
     require('./interface.js')
-
+    require('./player.js')
 </script>
 
 </html>

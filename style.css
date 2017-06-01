@@ -1,6 +1,7 @@
 html {
   background: #363636;
   font-family: Raleway, sans-serif;
+  color: white;
   margin: 10px;
 }
 
@@ -160,8 +161,4 @@ button {
 
 .export-button:hover {
   background-color: lightblue;
-}
-
-#output {
-  display: none;
 }

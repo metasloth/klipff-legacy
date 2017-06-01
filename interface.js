@@ -5,7 +5,7 @@ const spawn = require('child_process').spawn
 const path = require('path')
 
 const source = document.getElementById('vid-source')
-const previewPlayer = document.getElementById('preview')
+const previewPlayer = document.getElementById('video-preview')
 const inButton = document.getElementById('setin')
 const outButton = document.getElementById('setout')
 
@@ -61,7 +61,6 @@ outButton.addEventListener('click', (event) => {
 
 // Shorten video test
 const shortenButton = document.getElementById('shorten-video')
-const uiLog = document.getElementById('output')
 
 shortenButton.addEventListener('click', (event) => {
   let duration = Math.round((outPoint - inPoint) * 1000) / 1000
@@ -84,16 +83,10 @@ shortenButton.addEventListener('click', (event) => {
 
   proc.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 
   proc.on('close', (code) => {
     console.log(`child process exited with code ${code}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 })
 
@@ -120,16 +113,10 @@ gifButton.addEventListener('click', (event) => {
 
   shortenProc.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 
   shortenProc.on('close', (code) => {
     console.log(`child process exited with code ${code}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
-    uiLog.scrollTop = uiLog.scrollHeight
     createPalette()
   })
 })
@@ -138,7 +125,7 @@ function createPalette () {
   console.log('Creating palette...')
   let input = __dirname + '\\tmp\\shortened.mp4'
   let palletOut = __dirname + '\\tmp\\palette.png'
-  let filters = 'fps=24,scale=720:-1:flags=lanczos'
+  let filters = 'fps=30,scale=720:-1:flags=lanczos'
   let args = [
     '-v', 'warning',
     '-i', input,
@@ -154,16 +141,10 @@ function createPalette () {
 
   paletteProc.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 
   paletteProc.on('close', (code) => {
     console.log(`child process exited with code ${code}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
-    uiLog.scrollTop = uiLog.scrollHeight
     createGif()
   })
 }
@@ -190,15 +171,9 @@ function createGif () {
 
   gifProc.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `stderr: ${data}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 
   gifProc.on('close', (code) => {
     console.log(`child process exited with code ${code}`)
-    let currentText = uiLog.innerHTML
-    uiLog.innerHTML = currentText + '\n' + `child process exited with code ${code}`
-    uiLog.scrollTop = uiLog.scrollHeight
   })
 }
